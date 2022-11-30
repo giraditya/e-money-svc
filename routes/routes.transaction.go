@@ -14,7 +14,8 @@ func InitTransactionRoutes(db *gorm.DB, route *gin.Engine) {
 	transactionRepository := repository.NewTransactionRepository()
 	userRepository := repository.NewUserRepository()
 	balanceRepository := repository.NewBalanceRepository()
-	transactionService := service.NewTransactionService(db, transactionRepository, balanceRepository, userRepository)
+	balanceHistoryRepository := repository.NewBalanceHistoryRepository()
+	transactionService := service.NewTransactionService(db, transactionRepository, balanceRepository, balanceHistoryRepository, userRepository)
 	transactionController := controllers.NewTransactionController(transactionService)
 
 	groupRoute := route.Group("/v1")

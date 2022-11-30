@@ -3,13 +3,12 @@ package repository
 import (
 	"context"
 	"emoney-service/models"
-	"errors"
 
 	"gorm.io/gorm"
 )
 
 type BalanceRepository interface {
-	Decrease(ctx context.Context, db *gorm.DB, amount int, userid uint) error
+	Update(ctx context.Context, db *gorm.DB, amount int, userid uint) error
 	FetchByUserID(ctx context.Context, db *gorm.DB, userID uint) (models.Balance, error)
 }
 
@@ -19,19 +18,8 @@ func NewBalanceRepository() BalanceRepository {
 	return &balanceRepository{}
 }
 
-func (r *balanceRepository) Decrease(ctx context.Context, db *gorm.DB, amount int, userid uint) error {
-	var balance models.Balance
-	var newAmount int
-	err := db.Where("user_id = ?", userid).First(&balance).Error
-	if err != nil {
-		return err
-	}
-
-	if newAmount = balance.Balance - amount; newAmount < 0 {
-		return errors.New("balance not enough to decrease")
-	}
-
-	err = db.Model(&models.Balance{}).Where("user_id = ?", userid).Update("balance", newAmount).Error
+func (r *balanceRepository) Update(ctx context.Context, db *gorm.DB, amount int, userid uint) error {
+	err := db.Model(&models.Balance{}).Where("user_id = ?", userid).Update("balance", amount).Error
 	if err != nil {
 		return err
 	}

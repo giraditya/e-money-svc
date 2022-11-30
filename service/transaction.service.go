@@ -21,18 +21,20 @@ type TransactionService interface {
 }
 
 type transactionService struct {
-	DB                    *gorm.DB
-	TransactionRepository repository.TransactionRepository
-	BalanceRepository     repository.BalanceRepository
-	UserRepository        repository.UserRepository
+	DB                       *gorm.DB
+	TransactionRepository    repository.TransactionRepository
+	BalanceRepository        repository.BalanceRepository
+	BalanceHistoryRepository repository.BalanceHistoryRepository
+	UserRepository           repository.UserRepository
 }
 
-func NewTransactionService(db *gorm.DB, transactionRepository repository.TransactionRepository, balanceRepository repository.BalanceRepository, userRepository repository.UserRepository) TransactionService {
+func NewTransactionService(db *gorm.DB, transactionRepository repository.TransactionRepository, balanceRepository repository.BalanceRepository, balanceHistoryRepository repository.BalanceHistoryRepository, userRepository repository.UserRepository) TransactionService {
 	return &transactionService{
-		DB:                    db,
-		TransactionRepository: transactionRepository,
-		BalanceRepository:     balanceRepository,
-		UserRepository:        userRepository,
+		DB:                       db,
+		TransactionRepository:    transactionRepository,
+		BalanceRepository:        balanceRepository,
+		BalanceHistoryRepository: balanceHistoryRepository,
+		UserRepository:           userRepository,
 	}
 }
 
@@ -62,7 +64,22 @@ func (s *transactionService) Confirm(ctx context.Context, userId uint, billerId 
 		db.Rollback()
 		return false, err
 	}
-	err = s.BalanceRepository.Decrease(ctx, db, bindingBiller.BillerData.Price, userId)
+	resBalance, err := s.BalanceRepository.FetchByUserID(ctx, db, userId)
+	if err != nil {
+		db.Rollback()
+		return false, err
+	}
+	newBalance := resBalance.Balance - bindingBiller.BillerData.Price - bindingBiller.BillerData.Fee
+	if newBalance < 0 {
+		db.Rollback()
+		return false, errors.New("amount not enough")
+	}
+	err = s.BalanceRepository.Update(ctx, db, newBalance, userId)
+	if err != nil {
+		db.Rollback()
+		return false, err
+	}
+	err = s.BalanceHistoryRepository.Create(ctx, db, newBalance*-1, userId)
 	if err != nil {
 		db.Rollback()
 		return false, err
