@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giryaditya@gmail.com\",\r\n    \"username\": \"giriadityaa\",\r\n    \"password\": \"giriadmin123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giryaditya@gmail.com\",\r\n    \"username\": \"giriadityaaa\",\r\n    \"password\": \"giriadmin123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -78,7 +78,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NjkyMDM4NjgsInVzZXJpZCI6MX0.rycOf7PeqaKYj90MgnvUZEvZfo4hoj6lfizPGXHdOIY",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njk3NjA5MjQsInVzZXJpZCI6MX0.byT80HOCJkxn79zkngyP2wB-GfpRYVyNiChBRQL0YQE",
 									"type": "string"
 								}
 							]
@@ -160,7 +160,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njk3MzA5ODksInVzZXJpZCI6MX0.zZ_6oQBeK_KCV7ZIIKej-NXWYACHKF1usYFXMsq36ts",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njk4MDQ3NzcsInVzZXJpZCI6MX0.1PpsfZQrv0fClRoAafL72sG5NyWYjcDX9YiUGAMt6tM",
 									"type": "string"
 								}
 							]
@@ -191,7 +191,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njk3NjI0ODQsInVzZXJpZCI6MX0.UHcXWsIgA_hGXPFG_eBD-qHpdzzm5uYME5sQCVSG-rQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njk4MDQ3NzcsInVzZXJpZCI6MX0.1PpsfZQrv0fClRoAafL72sG5NyWYjcDX9YiUGAMt6tM",
 									"type": "string"
 								}
 							]
@@ -200,7 +200,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\": 1,\r\n    \"biller_id\": 2\r\n}",
+							"raw": "{\r\n    \"user_id\": 1,\r\n    \"biller_id\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -231,7 +231,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njk3NjI0ODQsInVzZXJpZCI6MX0.UHcXWsIgA_hGXPFG_eBD-qHpdzzm5uYME5sQCVSG-rQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njk4MDQ3NzcsInVzZXJpZCI6MX0.1PpsfZQrv0fClRoAafL72sG5NyWYjcDX9YiUGAMt6tM",
 									"type": "string"
 								}
 							]

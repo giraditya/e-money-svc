@@ -37,7 +37,7 @@ func (u *transactionController) FetchHistoryByUserID(c *gin.Context) {
 	var request presentation.TransactionFetchHistoryByUserIDRequest
 	var response []presentation.TransactionFetchHistoryByUserIDResponse
 
-	if err := c.ShouldBindJSON(&request); err != nil {
+	if err := c.ShouldBindUri(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
