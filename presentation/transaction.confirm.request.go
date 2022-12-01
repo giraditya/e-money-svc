@@ -1,6 +1,6 @@
 package presentation
 
 type TransactionConfirmRequest struct {
-	UserID   uint `json:"user_id" binding:"required"`
-	BillerID uint `json:"biller_id" binding:"required"`
+	UserID   uint `json:"userid" validate:"required,numeric"`
+	BillerID uint `json:"billerid" validate:"required,numeric"`
 }

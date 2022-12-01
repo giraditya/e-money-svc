@@ -1,5 +1,5 @@
 package presentation
 
 type BalanceFetchByUserIDRequest struct {
-	UserID string `uri:"userid" binding:"required"`
+	UserID string `uri:"userid" validate:"required,numeric"`
 }

@@ -6,5 +6,5 @@ type BalanceHistory struct {
 	gorm.Model
 	User   User
 	UserID uint
-	Amount int `json:"amount"`
+	Amount int
 }

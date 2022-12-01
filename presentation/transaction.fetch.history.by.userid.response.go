@@ -1,7 +1,7 @@
 package presentation
 
 type TransactionFetchHistoryByUserIDResponse struct {
-	UserID      uint   `json:"user_id"`
+	UserID      uint   `json:"userid"`
 	Category    string `json:"category"`
 	Product     string `json:"product"`
 	Description string `json:"description"`

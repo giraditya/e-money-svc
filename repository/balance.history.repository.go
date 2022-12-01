@@ -18,10 +18,11 @@ func NewBalanceHistoryRepository() BalanceHistoryRepository {
 }
 
 func (r *balanceHistoryRepository) Create(ctx context.Context, db *gorm.DB, amount int, userid uint) error {
-	err := db.Create(&models.BalanceHistory{
+	var balanceHistory = models.BalanceHistory{
 		UserID: userid,
 		Amount: amount,
-	}).Error
+	}
+	err := db.Create(&balanceHistory).Error
 	if err != nil {
 		return err
 	}

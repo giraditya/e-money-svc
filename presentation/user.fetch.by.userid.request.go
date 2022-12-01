@@ -1,5 +1,5 @@
 package presentation
 
 type UserFetchByUserIDRequest struct {
-	ID uint `json:"id" binding:"required"`
+	ID uint `json:"id" validate:"required,numeric"`
 }

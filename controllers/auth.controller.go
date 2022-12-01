@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"emoney-service/helpers"
 	"emoney-service/presentation"
 	"emoney-service/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type AuthController interface {
@@ -25,19 +27,22 @@ func NewAuthController(authService service.AuthService) AuthController {
 func (u *authController) Login(c *gin.Context) {
 	var request presentation.AuthLoginRequest
 	var response presentation.AuthLoginResponse
+	c.ShouldBindJSON(&request)
 
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	validate := validator.New()
+	if err := validate.Struct(request); err != nil {
+		helpers.ErrorValidate(c, http.StatusBadRequest, err)
 		return
 	}
+
 	result, err := u.AuthService.Login(c.Request.Context(), request.Username, request.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		helpers.ErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
 	response.Token = result.Token
 	response.ExpiredAt = result.ExpiredAt
 
-	c.JSON(http.StatusOK, gin.H{"data": response})
+	helpers.SuccessResponse(c, http.StatusOK, "Login Success", response)
 }

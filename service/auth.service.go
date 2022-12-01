@@ -32,19 +32,23 @@ func NewAuthService(db *gorm.DB, repository repository.UserRepository) AuthServi
 
 func (s *authService) Login(ctx context.Context, username string, password string) (models.Auth, error) {
 	var result models.Auth
-	db := s.DB
+	var db *gorm.DB = s.DB
+
 	user, err := s.Repository.FetchByUsername(ctx, db, username)
 	if err != nil {
 		return result, err
 	}
+
 	err = s.VerifyPassword(ctx, password, user.Password)
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
 		return result, errors.New("username or password mismatch")
 	}
+
 	token, err := token.GenerateToken(user.ID)
 	if err != nil {
 		return result, err
 	}
+
 	result.Token = token
 	result.ExpiredAt = time.Now().Add(time.Hour * 1)
 	return result, nil

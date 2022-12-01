@@ -25,15 +25,12 @@ func NewBalanceService(db *gorm.DB, repository repository.BalanceRepository) Bal
 }
 
 func (s *balanceService) FetchByUserID(ctx context.Context, id uint) (models.Balance, error) {
-	db := s.DB
+	var res models.Balance
+	var db *gorm.DB = s.DB
+
 	res, err := s.Repository.FetchByUserID(ctx, db, id)
 	if err != nil {
-		return models.Balance{}, err
-	} else {
-		return models.Balance{
-			User:    res.User,
-			UserID:  id,
-			Balance: res.Balance,
-		}, nil
+		return res, err
 	}
+	return res, nil
 }

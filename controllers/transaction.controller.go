@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"emoney-service/helpers"
 	"emoney-service/presentation"
 	"emoney-service/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type TransactionController interface {
@@ -27,23 +29,26 @@ func NewTransactionController(transactionService service.TransactionService) Tra
 func (u *transactionController) FetchInquiry(c *gin.Context) {
 	res, err := u.TransactionService.FetchInquiry(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		helpers.ErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": res})
+	helpers.SuccessResponse(c, http.StatusOK, "Inquiry Colletion", res)
 }
 
 func (u *transactionController) FetchHistoryByUserID(c *gin.Context) {
 	var request presentation.TransactionFetchHistoryByUserIDRequest
 	var response []presentation.TransactionFetchHistoryByUserIDResponse
+	c.ShouldBindUri(&request)
 
-	if err := c.ShouldBindUri(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	validate := validator.New()
+	if err := validate.Struct(request); err != nil {
+		helpers.ErrorValidate(c, http.StatusBadRequest, err)
 		return
 	}
+
 	res, err := u.TransactionService.FetchHistoryByUserID(c.Request.Context(), request.UserID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		helpers.ErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -59,22 +64,26 @@ func (u *transactionController) FetchHistoryByUserID(c *gin.Context) {
 		})
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": response})
+	helpers.SuccessResponse(c, http.StatusOK, "History User Transaction", response)
 }
 
 func (u *transactionController) Confirm(c *gin.Context) {
 	var request presentation.TransactionConfirmRequest
 	var response presentation.TransactionConfirmResponse
+	c.ShouldBindJSON(&request)
 
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	validate := validator.New()
+	if err := validate.Struct(request); err != nil {
+		helpers.ErrorValidate(c, http.StatusBadRequest, err)
 		return
 	}
+
 	_, err := u.TransactionService.Confirm(c.Request.Context(), request.UserID, request.BillerID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		helpers.ErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
+
 	response.Status = "OK"
-	c.JSON(http.StatusOK, gin.H{"data": response})
+	helpers.SuccessResponse(c, http.StatusOK, "Confirm Transaction Success", response)
 }

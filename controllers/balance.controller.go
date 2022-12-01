@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"emoney-service/helpers"
 	"emoney-service/presentation"
 	"emoney-service/service"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type BalanceController interface {
@@ -26,20 +28,23 @@ func NewBalanceController(balanceService service.BalanceService) BalanceControll
 func (u *balanceController) FetchBalanceByUserID(c *gin.Context) {
 	var request presentation.BalanceFetchByUserIDRequest
 	var response presentation.BalanceFetchByUserIDResponse
+	c.ShouldBindUri(&request)
 
-	if err := c.ShouldBindUri(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	validate := validator.New()
+	if err := validate.Struct(request); err != nil {
+		helpers.ErrorValidate(c, http.StatusBadRequest, err)
 		return
 	}
+
 	userID, _ := strconv.ParseUint(request.UserID, 10, 32)
 	result, err := u.BalanceService.FetchByUserID(c.Request.Context(), uint(userID))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		helpers.ErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
 	response.UserID = result.UserID
 	response.Balance = result.Balance
 
-	c.JSON(http.StatusOK, gin.H{"data": response})
+	helpers.SuccessResponse(c, http.StatusOK, "Balance", response)
 }
